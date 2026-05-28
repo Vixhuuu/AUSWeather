@@ -1,0 +1,41 @@
+Project Overview: Building a Rainfall Prediction Classifier
+This project is a practical machine learning lab designed to build and optimize predictive models that classify whether it will rain on a given day. Shifting the typical historical focus to a more localized and immediate application, the project aims to predict today’s rainfall using historical weather data collected up to and including yesterday.
+
+ere is a comprehensive description of the project based on the provided Jupyter Notebook source file:
+Project Overview: Building a Rainfall Prediction Classifier
+This project is a practical machine learning lab designed to build and optimize predictive models that classify whether it will rain on a given day. Shifting the typical historical focus to a more localized and immediate application, the project aims to predict today’s rainfall using historical weather data collected up to and including yesterday.
+Key Objectives
+Data Exploration & Feature Engineering: Handle missing values from a large-scale dataset, isolate regional geographic data, and derive seasonality features from dates.
+Pipeline Development: Construct an automated data preprocessing and classification pipeline using scikit-learn.
+Hyperparameter Optimization: Utilize Grid Search Cross-Validation (GridSearchCV) with target stratification (StratifiedKFold) to tune model parameters.
+Model Evaluation & Comparison: Evaluate predictive performance using classification reports, confusion matrices, and feature importance graphs, comparing a Random Forest Classifier against a Logistic Regression model.
+Dataset Details
+The data utilized in this project is sourced from the Australian Government's Bureau of Meteorology (originally hosted on Kaggle). The initial raw dataset covers 10 years of daily meteorological observations (2008–2017) across Australia, tracking 23 unique fields, including:
+Temperatures: Minimum, maximum, 9 AM, and 3 PM temperatures in Celsius.
+Atmospheric Conditions: Rainfall (mm), evaporation, sunshine duration, humidity levels, cloud cover, and mean sea-level pressure.
+Wind Metrics: Wind gust direction, speed, and standard morning/afternoon wind patterns.
+Target Flags: Categorical indicators for whether it rained "yesterday" or "today" (defined by at least 1mm of precipitation).
+Data Scope & Granularity
+To account for highly diverse regional climate variation across Australia, the dataset is restricted to a tight 18 km geographic cluster in the Melbourne area, filtering specifically for observations from Melbourne, MelbourneAirport, and Watsonia. After filtering and dropping rows with extensive missing metrics (e.g., sunshine and cloud cover fields), a clean framework of 7,557 records is utilized for modeling.
+Technical Workflow
+1. Feature Engineering
+Column Renaming: Target names are shifted (RainToday → RainYesterday, RainTomorrow → RainToday) to logically align with using past data to predict current conditions.
+Seasonality Extraction: The Date string field is parsed into datetime objects and mapped into a new categorical Season feature (Summer, Autumn, Winter, Spring) before dropping the high-cardinality date column.
+2. Preprocessing & Pipeline Construction
+A unified ColumnTransformer is created to handle disparate data types systematically without data leakage:
+Numeric Features Pipeline: Applied a StandardScaler to normalize quantitative weather variables.
+Categorical Features Pipeline: Utilized a OneHotEncoder (configured to ignore unknown test tokens) to handle location, wind directions, and seasons.
+3. Model Training & Fine-Tuning
+The project implements a comprehensive comparison across two primary machine learning frameworks:
+Model A: Random Forest Classifier
+Bundled with the preprocessor into an end-to-end Pipeline.
+Grid search parameters tuned: n_estimators (50, 100), max_depth (None, 10, 20), and min_samples_split (2, 5).
+Achieving a baseline test set accuracy of roughly 84%.
+Outputs feature importance metrics to visually identify the most dominant predictive atmospheric indicators.
+Model B: Logistic Regression
+The pipeline's classifier is updated via set_params to run a LogisticRegression architecture.
+Grid search parameters tuned: solver ('liblinear'), penalty ('l1', 'l2'), and class_weight (None, 'balanced') to explicitly combat target class imbalances.
+Authors & Affiliation
+Author: Jeff Grossman (IBM Corporation)
+Contributor: Abhishek Gagneja
+Copyright: © IBM Corporation
